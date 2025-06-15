@@ -7,6 +7,12 @@ services:
     env_file: .env
     volumes:
       - outline-data:/var/lib/outline/data
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.outline-wiki.entrypoints: "websecure"
+      traefik.http.routers.outline-wiki.rule: "Host(`${URL}`)"
+      traefik.http.services.outline-wiki.loadbalancer.server.port: 3000
+      traefik.http.routers.outline-wiki.tls: "true"
 
   postgres:
     image: postgres:13
@@ -25,3 +31,7 @@ volumes:
   outline-data:
   pgdata:
   redisdata:
+
+networks:
+  proxy:
+    external: true
