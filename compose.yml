@@ -10,9 +10,13 @@ services:
     labels:
       traefik.enable: "true"
       traefik.http.routers.outline-wiki.entrypoints: "websecure"
-      traefik.http.routers.outline-wiki.rule: "Host(`${URL}`)"
+      traefik.http.routers.outline-wiki.rule: "Host(`${FQDN}`)"
       traefik.http.services.outline-wiki.loadbalancer.server.port: 3000
       traefik.http.routers.outline-wiki.tls: "true"
+      traefik.http.routers.outline-wiki.tls.certresolver: "letsencrypt"
+    networks:
+      - proxy
+      - default
 
   postgres:
     image: postgres:13
